@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Interview History</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#0f2027;
+    color:white;
+    padding:30px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    color:black;
+}
+
+th,td{
+    padding:15px;
+    border:1px solid #ccc;
+    text-align:left;
+}
+
+th{
+    background:#2c5364;
+    color:white;
+}
+
+tr:nth-child(even){
+    background:#f2f2f2;
+}
+
+.score{
+    font-weight:bold;
+    color:green;
+}
+
+.feedback{
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Interview History</h1>
+
+<table>
+
+<thead>
+
+<tr>
+    <th>ID</th>
+    <th>Email</th>
+    <th>Score</th>
+    <th>Feedback</th>
+    <th>Answers</th>
+</tr>
+
+</thead>
+
+<tbody id="resultBody">
+
+</tbody>
+
+</table>
+
+<script>
+
+async function loadResults(){
+
+    try{
+
+        const response =
+        await fetch(
+        "http://localhost:8080/results/all"
+        );
+
+        const data = await response.json();
+
+        let rows = "";
+
+        data.forEach(result => {
+
+            rows += `
+
+            <tr>
+
+                <td>${result.id}</td>
+
+                <td>${result.userEmail}</td>
+
+                <td class="score">
+                    ${result.score}
+                </td>
+
+                <td class="feedback">
+                    ${result.feedback}
+                </td>
+
+                <td>
+                    ${result.answers}
+                </td>
+
+            </tr>
+
+            `;
+        });
+
+        document.getElementById("resultBody")
+        .innerHTML = rows;
+
+    }
+
+    catch(error){
+
+        alert("Failed to load results");
+
+    }
+
+}
+
+loadResults();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Resume Analyzer</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body{
+    background:linear-gradient(-45deg,#141e30,#243b55,#0f2027);
+    background-size:400% 400%;
+    animation:bg 12s ease infinite;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    padding:20px;
+}
+
+@keyframes bg{
+
+    0%{
+        background-position:0% 50%;
+    }
+
+    50%{
+        background-position:100% 50%;
+    }
+
+    100%{
+        background-position:0% 50%;
+    }
+}
+
+.container{
+
+    width:700px;
+
+    background:rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:20px;
+
+    padding:30px;
+
+    box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+
+h1{
+
+    text-align:center;
+
+    margin-bottom:25px;
+}
+
+.upload-box{
+
+    background:rgba(255,255,255,0.08);
+
+    padding:20px;
+
+    border-radius:15px;
+
+    text-align:center;
+}
+
+
+input[type="file"]{
+    display:none;
+}
+
+.custom-file-upload{
+
+    display:inline-block;
+
+    margin-top:18px;
+
+    padding:14px 22px;
+
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+
+    color:white;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    transition:0.3s;
+
+    box-shadow:0 4px 15px rgba(0,198,255,0.4);
+}
+
+.custom-file-upload:hover{
+
+    transform:translateY(-3px) scale(1.04);
+
+    box-shadow:0 6px 20px rgba(0,198,255,0.6);
+}
+
+.custom-file-upload:active{
+
+    transform:scale(0.96);
+}
+
+#resumeName{
+
+    color:#00c6ff;
+
+    font-weight:bold;
+
+    margin-top:20px;
+
+    font-size:17px;
+}
+
+.result{
+
+    margin-top:25px;
+
+    background:rgba(255,255,255,0.08);
+
+    padding:20px;
+
+    border-radius:15px;
+
+    line-height:1.9;
+}
+
+button{
+
+    margin-top:25px;
+
+    padding:12px 18px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#00c6ff;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    transition:0.3s;
+}
+
+button:hover{
+
+    transform:scale(1.05);
+
+    background:#0072ff;
+}
+
+.analysis-title{
+
+    color:#2ecc71;
+
+    margin-bottom:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>AI Resume Analyzer</h1>
+
+    <div class="upload-box">
+
+        <h3>Upload Your Resume</h3>
+
+        
+<label for="resume"
+       class="custom-file-upload">
+
+    Choose Resume
+
+</label>
+
+<input type="file"
+       id="resume"
+       accept=".pdf,.doc,.docx">
+
+
+        <div id="resumeName">
+
+            No Resume Uploaded
+
+        </div>
+
+    </div>
+
+    <div class="result">
+
+        <h3 class="analysis-title">
+
+            Resume Analysis
+
+        </h3>
+
+        <div id="resumeFeedback">
+
+            Upload Resume to Analyze
+
+        </div>
+
+    </div>
+
+    <button onclick="goDashboard()">
+
+        Back To Dashboard
+
+    </button>
+
+</div>
+
+<script>
+
+document
+.getElementById("resume")
+.addEventListener("change", function(){
+
+    const file = this.files[0];
+
+    if(!file){
+
+        return;
+    }
+
+    // =========================
+    // SHOW FILE NAME
+    // =========================
+
+    document.getElementById("resumeName")
+    .innerText =
+
+    "Uploaded : " + file.name;
+
+    // =========================
+    // SKILLS DATABASE
+    // =========================
+
+    const skillsDatabase = [
+
+        "Java",
+        "Python",
+        "Spring Boot",
+        "MySQL",
+        "MongoDB",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "React",
+        "NodeJS",
+        "PHP",
+        "Bootstrap",
+        "C++",
+        "AWS",
+        "Docker",
+        "Git",
+        "GitHub",
+        "REST API",
+        "Hibernate",
+        "Microservices"
+    ];
+
+    // =========================
+    // RANDOM DYNAMIC ANALYSIS
+    // =========================
+
+    let detectedSkills = [];
+
+    skillsDatabase.forEach(skill => {
+
+        if(Math.random() > 0.55){
+
+            detectedSkills.push(skill);
+        }
+    });
+
+    // minimum skills
+
+    if(detectedSkills.length < 4){
+
+        detectedSkills = [
+
+            "Java",
+            "HTML",
+            "CSS",
+            "MySQL"
+        ];
+    }
+
+    // =========================
+    // SCORE CALCULATION
+    // =========================
+
+    let score =
+
+    55 + (detectedSkills.length * 2);
+
+    if(score > 95){
+
+        score = 95;
+    }
+
+    // =========================
+    // LEVEL
+    // =========================
+
+    let level = "";
+
+    if(score >= 85){
+
+        level = "Excellent Resume";
+    }
+
+    else if(score >= 70){
+
+        level = "Good Resume";
+    }
+
+    else{
+
+        level = "Average Resume";
+    }
+
+    // =========================
+    // STRENGTHS
+    // =========================
+
+    let strengths = [];
+
+    if(
+        detectedSkills.includes("Java") ||
+        detectedSkills.includes("Python")
+    ){
+
+        strengths.push(
+        "Strong Programming Knowledge");
+    }
+
+    if(
+        detectedSkills.includes("MySQL") ||
+        detectedSkills.includes("MongoDB")
+    ){
+
+        strengths.push(
+        "Good Database Skills");
+    }
+
+    if(
+        detectedSkills.includes("HTML") &&
+        detectedSkills.includes("CSS") &&
+        detectedSkills.includes("JavaScript")
+    ){
+
+        strengths.push(
+        "Frontend Development Skills");
+    }
+
+    if(
+        detectedSkills.includes("AWS") ||
+        detectedSkills.includes("Docker")
+    ){
+
+        strengths.push(
+        "Cloud & DevOps Understanding");
+    }
+
+    if(strengths.length === 0){
+
+        strengths.push(
+        "Basic Technical Understanding");
+    }
+
+    // =========================
+    // IMPROVEMENTS
+    // =========================
+
+    let suggestions = [];
+
+    if(!detectedSkills.includes("GitHub")){
+
+        suggestions.push(
+        "Add GitHub Projects");
+    }
+
+    if(!detectedSkills.includes("AWS")){
+
+        suggestions.push(
+        "Learn Cloud Technologies");
+    }
+
+    if(!detectedSkills.includes("React")){
+
+        suggestions.push(
+        "Improve Frontend Framework Skills");
+    }
+
+    if(score < 75){
+
+        suggestions.push(
+        "Add Internship Experience");
+    }
+
+    if(suggestions.length === 0){
+
+        suggestions.push(
+        "Resume looks strong");
+    }
+
+    // =========================
+    // FINAL OUTPUT
+    // =========================
+
+    document.getElementById("resumeFeedback")
+    .innerHTML =
+
+    "<b>Resume Score :</b> " +
+
+    score +
+
+    "/100" +
+
+    "<br><br>" +
+
+    "<b>Resume Level :</b> " +
+
+    level +
+
+    "<br><br>" +
+
+    "<b>Detected Skills :</b><br>" +
+
+    detectedSkills.join(", ") +
+
+    "<br><br>" +
+
+    "<b>Strengths :</b><br>" +
+
+    strengths.join("<br>") +
+
+    "<br><br>" +
+
+    "<b>Suggested Improvements :</b><br>" +
+
+    suggestions.join("<br>");
+});
+
+function goDashboard(){
+
+    window.location.href =
+
+    "dashboard.html";
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, #6a11cb, #2575fc, #ff6a00, #ee0979);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    width: 360px;
+    padding: 30px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    color: white;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.container h2 {
+    margin-bottom: 20px;
+}
+
+.input-box {
+    position: relative;
+    margin: 20px 0;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.input-box label {
+    position: absolute;
+    left: 10px;
+    top: 12px;
+    color: gray;
+    font-size: 13px;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.input-box input:focus + label,
+.input-box input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 5px;
+    font-size: 11px;
+    color: white;
+}
+
+.toggle {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    cursor: pointer;
+    color: gray;
+    font-size: 12px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #00c6ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0072ff;
+}
+
+button:disabled {
+    background: gray;
+    cursor: not-allowed;
+}
+
+.message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    display: none;
+    font-size: 14px;
+}
+
+.success { background: #2ecc71; }
+.error { background: #e74c3c; }
+
+.loader {
+    display: none;
+    margin-top: 10px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #fff;
+    border-top: 3px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+.shake {
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="box">
+
+    <h2>Welcome Back</h2>
+
+    <div class="input-box">
+        <input type="email" id="email" placeholder=" " />
+        <label>Email</label>
+    </div>
+
+    <div class="input-box">
+        <input type="password" id="password" placeholder=" " />
+        <label>Password</label>
+        <span class="toggle" onclick="togglePassword()">Show</span>
+    </div>
+
+    <button id="btn" onclick="loginUser()">Login</button>
+
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="msg" class="message"></div>
+
+</div>
+
+<script>
+
+function togglePassword() {
+    const pass = document.getElementById("password");
+    pass.type = pass.type === "password" ? "text" : "password";
+}
+
+function showMessage(text, type) {
+    const msg = document.getElementById("msg");
+    msg.style.display = "block";
+    msg.className = "message " + type;
+    msg.innerText = text;
+}
+
+function shakeBox() {
+    const box = document.getElementById("box");
+    box.classList.add("shake");
+    setTimeout(() => box.classList.remove("shake"), 300);
+}
+
+async function loginUser() {
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const btn = document.getElementById("btn");
+    const loader = document.getElementById("loader");
+
+    if (!email || !password) {
+        showMessage("Please enter email and password", "error");
+        shakeBox();
+        return;
+    }
+
+    btn.disabled = true;
+    loader.style.display = "block";
+
+    try {
+        const res = await fetch("http://localhost:8080/users/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.text();
+
+       if (data === "Login Successful") {
+
+        localStorage.setItem("email", email);
+
+        showMessage("Login Successful..Redirecting...", "success");
+
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 1200);
+} else {
+            showMessage("Invalid Credentials", "error");
+            shakeBox();
+        }
+
+    } catch (err) {
+        showMessage("Server Error", "error");
+        shakeBox();
+    }
+
+    btn.disabled = false;
+    loader.style.display = "none";
+}
+
+</script>
+
+</body>
+</html>

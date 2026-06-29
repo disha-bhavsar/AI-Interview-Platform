@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Admin Dashboard</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    padding:30px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.table-container{
+    background:#1e293b;
+    padding:20px;
+    border-radius:15px;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#2563eb;
+    padding:15px;
+}
+
+td{
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #334155;
+}
+
+tr:hover{
+    background:#334155;
+}
+
+.score{
+    color:#22c55e;
+    font-weight:bold;
+}
+
+.feedback{
+    color:#facc15;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Username</th>
+<th>Answer</th>
+<th>Score</th>
+<th>Feedback</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tableBody">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+async function loadResults(){
+
+    try{
+
+        const response =
+        await fetch(
+        "http://localhost:8080/results/all"
+        );
+
+        const data =
+        await response.json();
+
+        let rows = "";
+
+        data.forEach(result => {
+
+            rows += `
+
+            <tr>
+
+            <td>${result.id}</td>
+
+            <td>${result.username}</td>
+
+            <td>${result.answer}</td>
+
+            <td class="score">
+                ${result.score}
+            </td>
+
+            <td class="feedback">
+                ${result.feedback}
+            </td>
+
+            </tr>
+
+            `;
+        });
+
+        document.getElementById("tableBody")
+        .innerHTML = rows;
+
+    }
+
+    catch(error){
+
+        alert("Error loading results");
+    }
+}
+
+loadResults();
+
+</script>
+
+</body>
+
+</html>
