@@ -167,43 +167,30 @@ The platform evaluates answers based on:
 
 ## 🔹 Login Page
 
-Add screenshot here:
+<img width="1920" height="1080" alt="Screenshot (74)" src="https://github.com/user-attachments/assets/ef0c8dcc-9fbe-4010-8b36-b0163be869b6" />
 
-```md
-![Login Page](screenshots/login.png)
-```
+
 
 ---
 
 ## 🔹 Dashboard
 
-Add screenshot here:
+<img width="1524" height="731" alt="image" src="https://github.com/user-attachments/assets/488a9835-2141-49d3-9e1f-d961c6299da2" />
 
-```md
-![Dashboard](screenshots/dashboard.png)
-```
 
 ---
 
 ## 🔹 AI Interview Page
 
-Add screenshot here:
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/25e3ae93-2b27-4e9e-af96-3de6d9dc7418" />
 
-```md
-![Interview Page](screenshots/interview.png)
-```
+
 
 ---
 
 ## 🔹 Resume Analyzer
 
-Add screenshot here:
-
-```md
-![Resume Analyzer](screenshots/resume.png)
-```
-
----
+<img width="1493" height="736" alt="image" src="https://github.com/user-attachments/assets/a2524a6a-6ec9-4c86-875d-c3ecb6429e39" />
 
 # 🔮 Future Enhancements
 
